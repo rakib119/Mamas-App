@@ -16,7 +16,6 @@ Mama’s App is a thoughtfully designed web and mobile application aimed at supp
 - **Daily Routine Management:** Record meals, hydration, exercise, and other health activities.
 - **Custom Alarms & Reminders:** Set alarms with repeat days and pre-notifications for key routines.
 - **Secure Report Sharing:** Share daily or weekly reports with partners to foster engagement and collaborative monitoring.
-- **12-Hour Time Display:** Clear AM/PM time display for all alarms and activity logs.
 - **Responsive Design:** Fully responsive UI for mobile and desktop.
 - **Offline Support:** Temporary local storage for tracking when offline.
 
