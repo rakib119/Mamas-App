@@ -1,0 +1,219 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+:root {
+    --brand-color: #ff7088;
+    --title-color:#ff7088;
+    --title-color-2:#be2040;
+    /* --table-head-2:#c73451; */
+    --table-head-2: #d57d8f;
+    --title-color-2:#be2040;
+    --secondary-color:#ffd1da;
+    --tertiary-color: #E0FAF2;
+    --body-color-1:#ff7088;
+    --body-color-2:#ffd1da;
+    --body-color-2:#ffd1da;
+    --body-color-3: #ffffff;
+    --account-bg-color: #ffd1da;
+    --text-color-2: var(--brand-color);
+    --text-color-3: rgba(255, 255, 255, 0.70);
+    --header-bg-color: #ECEFF2;
+    --sec-bg-color-2: #081c17;
+    --max-width:485p;
+}
+body {
+    background: linear-gradient(180deg, var(--body-color-1), var(--body-color-2));
+    max-width: 100% !important;
+    min-height: 100vh;
+}
+#counting-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+}
+
+
+/* .kick-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+*/
+#kick-container {
+    width:100% !important;
+    height: 75% !important;
+    display: flex;
+    justify-content: center;
+}
+.kick-button {
+    width:485px !important;
+    height:100% !important;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.kick-button img {
+    height: 100% !important;
+    display: block;
+    /* margin-right: -20%; */
+}
+
+
+
+.info-section
+{
+    width: 100%;
+    background: linear-gradient(180deg, var(--body-color-1), var(--body-color-2));
+    border-radius: 20px;
+    padding: 15px;
+    height: 21%;
+    color: var(--text-color-1);
+}
+.profile_item
+{
+    background: linear-gradient(180deg, var(--body-color-1), var(--body-color-2));
+    border-radius: 20px;
+
+    margin: 10px 0 !important;
+}
+.profile_item p
+{
+    vertical-align: middle;
+    text-align: center;
+    color: var(--text-color-1);
+    padding: 15px 0 !important;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+}
+
+.info-item {
+    text-align: center;
+}
+
+.label {
+    display: block;
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+.value {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.history {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.history .icon {
+    margin-right: 6px;
+}
+/*===============Android Menu Start===============*/
+.android-menu-bar {
+    text-align: center !important;
+    background-color: var(--header-bg-color);
+    /* padding-bottom: 5px !important; */
+    position: fixed;
+    bottom: 0;
+    width: 100% !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    z-index: 999;
+    border-top: 1px solid var(--brand-color);
+}
+
+/*===============Android Menu End===============*/
+
+
+.android-menu-bar {
+    /* bottom: 20px; */
+    transition: none;
+}
+.android-menu-bar .nav-link {
+    padding: 0;
+}
+.android-menu-item {
+    color: var(--text-color-2) !important;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    /* padding: 16px; */
+    box-sizing: border-box;
+}
+.item-inner{
+    padding: 5px 0;
+}
+.android-menu-item p{
+    font-size:9px !important;
+    margin: 0;
+}
+.android-menu-item i,svg{
+    font-size: 28px !important;
+
+}
+.custom-modal svg,.error-modal svg{
+    font-size: 60px !important;
+}
+/* .style1 svg {
+    font-size: 12px;
+} */
+.modal-footer {
+    padding-top: 40px !important;
+}
+#sellBtn{
+        padding: 12px 30px !important;
+}
+.trk-btn-auth{
+    font-size: 13px !important;
+}
+.android-menu-item .active {
+    color: var(--tertiary-color);
+    background: var(--brand-color);
+}
+
+.android-menu-item:hover {
+    color: var(--text-color-2) !important;
+    background: var(--secondary-color)!important;
+    cursor: pointer;
+}
+/* .login-register-menu{
+    display: none;
+} */
+button svg{
+    width: 20px;
+    height: 20px;
+    height: 1rem !important;
+}
+.item-inner svg:hover {
+    cursor: pointer !important;
+}
+.icon-svg{
+    font-size: 12px !important;
+}
+.pricing__item-inner {
+    padding-block: 12px;
+}
+.section-header--max50 {
+    max-inline-size: 50ch;
+    margin: 0 auto 15px auto;
+}
+
+
