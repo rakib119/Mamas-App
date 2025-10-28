@@ -4,130 +4,6 @@
 @extends('frontend.layout.frontend')
 @section('css')
     <link rel="stylesheet" href="{{asset('assets/css/auth.css')}}" />
-    <style>
-        #remainder-section{
-            padding-top: 40px;
-        }
-        .alarm-list-container{
-            max-height:450px !important;
-            scrollbar-width: none; /* Firefox 64+ */
-            -ms-overflow-style: none; /* IE and Edge */
-            overflow-y: scroll;
-        }
-        .alarm-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            color: var(--tertiary-color);
-            background: var(--table-head-2);
-        }
-        .alarm-header h4 {
-            color: var(--tertiary-color);
-        }
-        .alarm-list {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-        .alarm-item {
-            background: var(--table-head-2);
-            border-bottom: 1px solid #ddd;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .alarm-item:hover {
-            background: var(--brand-color);
-        }
-        .alarm-time {
-            font-size: 28px;
-            font-weight: 600;
-            color: var(--tertiary-color);
-        }
-        .alarm-label {
-            font-size: 14px;
-            color: var(--tertiary-color);
-        }
-        .btn-add {
-            color: var(--tertiary-color);
-            font-size: 28px;
-            font-weight: bold;
-            background: none;
-            border: none;
-        }
-        .modal-header {
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: none;
-        }
-        .modal-title {
-            font-weight: 600;
-        }
-        .btn-cancel, .btn-save {
-            background: none;
-            border: none;
-            color: #00D094;
-            font-size: 16px;
-            font-weight: 600;
-        }
-        .delete-btn {
-            color: red;
-            font-weight: 600;
-            margin-top: 20px;
-            width: 100%;
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 48px;
-            height: 26px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            inset: 0;
-            background-color: #ccc;
-            transition: 0.4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: 0.4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #00D094;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(22px);
-        }
-
-        .slider.round {
-            border-radius: 34px;
-        }
-
-    </style>
 @endsection
 @section('content')
     <section id="remainder-section" class="feature feature--style1 padding-bottom padding-top-2 bg-color">
@@ -143,51 +19,50 @@
                 <ul class="alarm-list" id="alarmList"></ul>
             </div>
             <div class="modal fade" id="alarmModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content p-3">
-                    <div class="modal-header">
-                        <button class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
-                        <h5 class="modal-title">Add Alarm</h5>
-                        <button class="btn-save" id="saveAlarmBtn">Save</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label>Time</label>
-                            <input type="time" class="form-control" id="alarmTime">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content p-3">
+                        <div class="modal-header">
+                            <button class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                            <h5 class="modal-title">Add Alarm</h5>
+                            <button class="btn-save" id="saveAlarmBtn">Save</button>
                         </div>
-                        <div class="mb-3">
-                            <label>Label</label>
-                            <input type="text" class="form-control" id="alarmLabel" placeholder="Alarm label">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label>Time</label>
+                                <input type="time" class="form-control" id="alarmTime">
+                            </div>
+                            <div class="mb-3">
+                                <label>Label</label>
+                                <input type="text" class="form-control" id="alarmLabel" placeholder="Alarm label">
+                            </div>
+                            <div class="mb-3">
+                                <label>Repeat Days</label><br>
+                                <div id="dayButtons" class="d-flex flex-wrap gap-2">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Sun">Sun</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Mon">Mon</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Tue">Tue</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Wed">Wed</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Thu">Thu</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Fri">Fri</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Sat">Sat</button>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label>Reminder Before</label>
+                                <div class="d-flex gap-2">
+                                    <input type="number" class="form-control" id="remHour" placeholder="Hour" min="0" style="max-width:100px;">
+                                    <input type="number" class="form-control" id="remMin" placeholder="Min" min="0" max="59" style="max-width:100px;">
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-danger delete-btn d-none" id="deleteAlarmBtn">Delete Alarm</button>
                         </div>
-                        <div class="mb-3">
-                            <label>Repeat Days</label><br>
-                            <div id="dayButtons" class="d-flex flex-wrap gap-2">
-                            <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Sun">Sun</button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Mon">Mon</button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Tue">Tue</button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Wed">Wed</button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Thu">Thu</button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Fri">Fri</button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm day-btn" data-day="Sat">Sat</button>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label>Reminder Before</label>
-                        <div class="d-flex gap-2">
-                        <input type="number" class="form-control" id="remHour" placeholder="Hour" min="0" style="max-width:100px;">
-                        <input type="number" class="form-control" id="remMin" placeholder="Min" min="0" max="59" style="max-width:100px;">
-                    </div>
-                    </div>
-                        <button class="btn btn-outline-danger delete-btn d-none" id="deleteAlarmBtn">Delete Alarm</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </section>
 @endsection
 @section('javaScript')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const alarmModal = new bootstrap.Modal(document.getElementById('alarmModal'));
         const addAlarmBtn = document.getElementById('addAlarmBtn');
@@ -339,5 +214,4 @@
         // Initial load
         fetchAlarms();
     </script>
-
 @endsection
