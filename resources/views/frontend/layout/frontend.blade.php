@@ -63,19 +63,25 @@
     <script src="{{asset('assets/js/all.min.js')}}"></script>
     <script src="{{asset('assets/js/script.js')}}"></script>
     {{-- ROUTINE STATUS --}}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let alarms = [];
-        let snoozedAlarms = {}; // { alarm_id: nextReminderTimestamp }
-        let isModalOpen = false; // prevent multiple modals
+        let routineList = [];
+        let snoozedAlarms = {};
+        let isModalOpen = false;
 
-        // ✅ Fetch alarms from backend
+        // ✅ Safe fetch after UI loads
         async function fetchAlarms() {
-            const res = await fetch("{{ route('routine.list') }}");
-            alarms = await res.json();
+            try {
+                const res = await fetch("{{ route('routine.list') }}", {
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!res.ok) throw new Error('Failed to load routineList');
+                routineList = await res.json();
+            } catch (err) {
+                console.error('Error loading routineList:', err);
+                routineList = [];
+            }
         }
 
-        // ✅ Convert time to 12-hour format
         function formatTime12(time) {
             const [h, m] = time.split(':').map(Number);
             const suffix = h >= 12 ? 'PM' : 'AM';
@@ -83,20 +89,17 @@
             return `${hour}:${m.toString().padStart(2, '0')} ${suffix}`;
         }
 
-        // ✅ Check alarms and show modal if within ±1 hour
         async function checkAlarms() {
-            // 🧠 Skip if a modal is already open
             if (isModalOpen) return;
+            if (!routineList.length) return;
 
             const now = new Date();
 
-            for (const alarm of alarms) {
+            for (const alarm of routineList) {
                 if (!alarm.enabled) continue;
 
-                // Skip snoozed alarms
-                if (snoozedAlarms[alarm.id] && now < snoozedAlarms[alarm.id]) {
-                    continue;
-                }
+                // Snoozed check
+                if (snoozedAlarms[alarm.id] && now < snoozedAlarms[alarm.id]) continue;
 
                 const [alarmHour, alarmMin] = alarm.time.split(':').map(Number);
                 const alarmTime = new Date();
@@ -104,22 +107,19 @@
 
                 const diffMinutes = Math.round((now - alarmTime) / 60000);
 
-                // Within ±1 hour
                 if (Math.abs(diffMinutes) <= 60) {
                     const res = await fetch(`/routine/check-status/${alarm.id}`);
                     const data = await res.json();
-
                     if (!data.completed) {
                         showAlarmAlert(alarm);
-                        break; // Show only one popup at a time
+                        break;
                     }
                 }
             }
         }
 
-        // ✅ Show Bootstrap modal reminder
         function showAlarmAlert(alarm) {
-            if (isModalOpen) return; // safety double-check
+            if (isModalOpen) return;
             isModalOpen = true;
 
             const existing = document.getElementById('alertModal');
@@ -147,7 +147,6 @@
             const alertModal = new bootstrap.Modal(alertModalEl);
             alertModal.show();
 
-            // ✅ Mark completed
             document.getElementById('confirmAlarmBtn').addEventListener('click', async () => {
                 await fetch(`/routine/mark-completed`, {
                     method: 'POST',
@@ -162,7 +161,6 @@
                 isModalOpen = false;
             });
 
-            // ✅ Snooze for 10 minutes
             document.getElementById('cancelAlarmBtn').addEventListener('click', () => {
                 const snoozeUntil = new Date();
                 snoozeUntil.setMinutes(snoozeUntil.getMinutes() + 10);
@@ -172,19 +170,22 @@
                 isModalOpen = false;
             });
 
-            // ✅ Reset flag when closed by any means
             alertModalEl.addEventListener('hidden.bs.modal', () => {
                 isModalOpen = false;
             });
         }
 
-        // ✅ Initialize
-        document.addEventListener("DOMContentLoaded", async () => {
-            await fetchAlarms();
-            checkAlarms(); // check immediately
-            setInterval(checkAlarms, 300000); // check every 5 minutes
+        // ✅ Initialize safely after DOM + layout + bootstrap
+        document.addEventListener("DOMContentLoaded", () => {
+            // Wait until UI loads, then start fetching
+            setTimeout(async () => {
+                await fetchAlarms();
+                await checkAlarms(); // check once
+                setInterval(checkAlarms, 300000); // check every 5 min
+            }, 1500); // delay ensures UI fully loaded
         });
     </script>
+
 
     @yield('javaScript')
 
